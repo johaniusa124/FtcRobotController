@@ -49,7 +49,8 @@ public class Drive6 extends OpMode {
     boolean isFlywheel = false;
     boolean isRecycling = false;
     boolean isSorting = false;
-    boolean isAutoPitchAiming = true;
+    boolean isAutoPitchAiming = false;
+    boolean isAdjusting = false;
 
     boolean RedAlliance = Boolean.parseBoolean(null);
     boolean redGoalTag = false;
@@ -62,9 +63,10 @@ public class Drive6 extends OpMode {
     double height = 50;
 
     double startTime;
+    double finishTime;
     double servoRuntime;
-
-
+    double servoSpeed = 428.571; //Degrees per sec
+    double targetAngle;
 
     private double getNewVelocity(double current, double target) {
         return target;
@@ -147,7 +149,7 @@ public class Drive6 extends OpMode {
         //aiming Servo
         //zero
         flyAdjust.setPower(.5);
-        flyAdjustAngle = 5;
+        flyAdjustAngle = 10;
 
     }
 
@@ -293,15 +295,36 @@ public class Drive6 extends OpMode {
 
         //aiming
 
-        if (RedAlliance){
-            if (id24 != null){
-                startTime = getRuntime();
+        if (!isAdjusting) {
+            if (RedAlliance) {
+                if (id24 != null) {
+                    targetAngle = pitchAim((int) flywheel1.getVelocity(), dist / 100, height / 100);
+
+                    servoRuntime = Math.abs(targetAngle - flyAdjustAngle) / servoSpeed;
+
+                    startTime = getRuntime();
+                    finishTime = startTime + servoRuntime;
+
+                    if (targetAngle - flyAdjustAngle > 0) {
+                        flyAdjust.setPower(1);
+                    } else if (targetAngle - flyAdjustAngle < 0) {
+                        flyAdjust.setPower(-1);
+                    }
+
+                    isAdjusting = true;
+
+                }
+            } else if (!RedAlliance) {
+                if (id20 != null) {
+                    bearing = aprilTagWebcam.returnBearing(id20);
+                    yaw = aprilTagWebcam.returnYaw(id20);
+                }
             }
-        } else if (!RedAlliance){
-            if (id20 != null){
-                bearing = aprilTagWebcam.returnBearing(id20);
-                yaw = aprilTagWebcam.returnYaw(id20);
-            }
+        }
+
+        if (getRuntime()>=finishTime){
+            isAdjusting = false;
+            flyAdjust.setPower(0);
         }
 
 
