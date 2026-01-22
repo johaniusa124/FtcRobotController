@@ -79,4 +79,28 @@ public class AprilTagWebcam {
         }
 
     }
+
+    public double returnYaw(AprilTagDetection detectedID){
+        if (detectedID == null) {return -1;}
+        if (detectedID.metadata != null) {return detectedID.ftcPose.yaw;}
+        return -1000;
+    }
+
+    public double returnDist(AprilTagDetection detectedID){
+        if (detectedID == null) {return -1;}
+        if (detectedID.metadata != null) {return detectedID.ftcPose.z;}
+        return -1000;
+    }
+
+    public double returnElevation(AprilTagDetection detectedID){
+        if (detectedID == null) {return -1;}
+        if (detectedID.metadata != null) {return detectedID.ftcPose.y;}
+        return -1000;
+    }
+
+    public double returnBearing(AprilTagDetection detectedID){
+        if (detectedID == null) {return -1;}
+        if (detectedID.metadata != null) {return detectedID.ftcPose.bearing;}
+        return -1000;
+    }
 }

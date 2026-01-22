@@ -10,6 +10,7 @@ import org.firstinspires.ftc.vision.VisionPortal;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
 import java.util.List;
@@ -50,7 +51,7 @@ import java.util.List; */
 
 @TeleOp
 
-public class DriveTest5 extends LinearOpMode {
+public class DriveTest5(1) extends LinearOpMode {
 
     DcMotorEx frontLeftMotor;
     DcMotorEx frontRightMotor;
@@ -256,7 +257,7 @@ public class DriveTest5 extends LinearOpMode {
                 P -= stepSizes[stepIndex];
             }
 
-            PIDFCoefficients pidfCoefficients = new PIDFCoefficients(P, 0, 0, F);
+            pidfCoefficients = new PIDFCoefficients(P, 0, 0, F);
 
             flywheel1.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
             flywheel2.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
