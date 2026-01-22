@@ -87,10 +87,10 @@ public class Drive6 extends OpMode {
         backLeftSpeed = getNewVelocity(backLeftSpeed, backLeftTarget);
         backRightSpeed = getNewVelocity(backRightSpeed, backRightTarget);
 
-        frontLeftMotor.setVelocity(frontLeftSpeed);
-        frontRightMotor.setVelocity(frontRightSpeed);
-        backLeftMotor.setVelocity(backLeftSpeed);
-        backRightMotor.setVelocity(backRightSpeed);
+        frontLeftMotor.setVelocity(frontLeftSpeed*1500);
+        frontRightMotor.setVelocity(frontRightSpeed*1500);
+        backLeftMotor.setVelocity(backLeftSpeed*1500);
+        backRightMotor.setVelocity(backRightSpeed*1500);
     }
 
     public double pitchAim(int rpm, double dist, double height) {
@@ -148,7 +148,7 @@ public class Drive6 extends OpMode {
 
         //aiming Servo
         //zero
-        flyAdjust.setPower(.5);
+        //flyAdjust.setPower(.5);
         flyAdjustAngle = 10;
 
     }
@@ -361,7 +361,6 @@ public class Drive6 extends OpMode {
             }
         }
 
-
-
+        telemetry.addData("runtime", getRuntime());
     }
 }
