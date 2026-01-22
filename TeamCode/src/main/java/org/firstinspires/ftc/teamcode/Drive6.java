@@ -259,8 +259,8 @@ public class Drive6 extends OpMode {
                 flywheel2.setVelocity(0);
                 isFlywheel = false;
             } else {
-                flywheel1.setVelocity(1000);
-                flywheel2.setVelocity(1000);
+                flywheel1.setVelocity(1500);
+                flywheel2.setVelocity(1500);
                 isFlywheel = true;
             }
         }
@@ -295,41 +295,43 @@ public class Drive6 extends OpMode {
 
         //aiming
 
-        if (!isAdjusting) {
-            if (RedAlliance) {
-                if (id24 != null) {
-                    targetAngle = pitchAim((int) flywheel1.getVelocity(), dist / 100, height / 100);
+        if (isAutoPitchAiming) {
+            if (!isAdjusting) {
+                if (RedAlliance) {
+                    if (id24 != null) {
+                        targetAngle = pitchAim((int) flywheel1.getVelocity(), dist / 100, height / 100);
 
-                    servoRuntime = Math.abs(targetAngle - flyAdjustAngle) / servoSpeed;
+                        servoRuntime = Math.abs(targetAngle - flyAdjustAngle) / servoSpeed;
 
-                    startTime = getRuntime();
-                    finishTime = startTime + servoRuntime;
+                        startTime = getRuntime();
+                        finishTime = startTime + servoRuntime;
 
-                    if (targetAngle - flyAdjustAngle > 0) {
-                        flyAdjust.setPower(1);
-                    } else if (targetAngle - flyAdjustAngle < 0) {
-                        flyAdjust.setPower(-1);
+                        if (targetAngle - flyAdjustAngle > 0) {
+                            flyAdjust.setPower(1);
+                        } else if (targetAngle - flyAdjustAngle < 0) {
+                            flyAdjust.setPower(-1);
+                        }
+
+                        isAdjusting = true;
+
                     }
+                } else if (!RedAlliance) {
+                    if (id20 != null) {
+                        targetAngle = pitchAim((int) flywheel1.getVelocity(), dist / 100, height / 100);
 
-                    isAdjusting = true;
+                        servoRuntime = Math.abs(targetAngle - flyAdjustAngle) / servoSpeed;
 
-                }
-            } else if (!RedAlliance) {
-                if (id20 != null) {
-                    targetAngle = pitchAim((int) flywheel1.getVelocity(), dist / 100, height / 100);
+                        startTime = getRuntime();
+                        finishTime = startTime + servoRuntime;
 
-                    servoRuntime = Math.abs(targetAngle - flyAdjustAngle) / servoSpeed;
+                        if (targetAngle - flyAdjustAngle > 0) {
+                            flyAdjust.setPower(1);
+                        } else if (targetAngle - flyAdjustAngle < 0) {
+                            flyAdjust.setPower(-1);
+                        }
 
-                    startTime = getRuntime();
-                    finishTime = startTime + servoRuntime;
-
-                    if (targetAngle - flyAdjustAngle > 0) {
-                        flyAdjust.setPower(1);
-                    } else if (targetAngle - flyAdjustAngle < 0) {
-                        flyAdjust.setPower(-1);
+                        isAdjusting = true;
                     }
-
-                    isAdjusting = true;
                 }
             }
         }
@@ -348,6 +350,14 @@ public class Drive6 extends OpMode {
                 flyAdjust.setPower(gamepad2.right_trigger * -1);
             } else {
                 flyAdjust.setPower(0);
+            }
+        }
+
+        if (gamepad2.leftBumperWasPressed()) {
+            if (isAutoPitchAiming) {
+                isAutoPitchAiming = false;
+            } else {
+                isAutoPitchAiming = true;
             }
         }
 
