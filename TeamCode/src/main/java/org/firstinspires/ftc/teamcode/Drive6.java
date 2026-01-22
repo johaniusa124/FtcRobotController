@@ -316,8 +316,20 @@ public class Drive6 extends OpMode {
                 }
             } else if (!RedAlliance) {
                 if (id20 != null) {
-                    bearing = aprilTagWebcam.returnBearing(id20);
-                    yaw = aprilTagWebcam.returnYaw(id20);
+                    targetAngle = pitchAim((int) flywheel1.getVelocity(), dist / 100, height / 100);
+
+                    servoRuntime = Math.abs(targetAngle - flyAdjustAngle) / servoSpeed;
+
+                    startTime = getRuntime();
+                    finishTime = startTime + servoRuntime;
+
+                    if (targetAngle - flyAdjustAngle > 0) {
+                        flyAdjust.setPower(1);
+                    } else if (targetAngle - flyAdjustAngle < 0) {
+                        flyAdjust.setPower(-1);
+                    }
+
+                    isAdjusting = true;
                 }
             }
         }
